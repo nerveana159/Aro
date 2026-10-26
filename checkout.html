@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline';">
+  <title>Aro Marketplace Checkout | Powered by Stripe</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/stripe-checkout.css">
+</head>
+<body class="stripe-checkout-body">
+
+  <!-- Top Stripe Secure Production Banner -->
+  <header class="stripe-live-banner" style="background: linear-gradient(90deg, #065f46, #047857); color: #ffffff; padding: 9px 18px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: space-between; gap: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); z-index: 100;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span class="badge" style="background: #10b981; color: #ffffff; font-weight: 800; font-size: 0.72rem; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px;">PRODUCTION LIVE</span>
+      <span>Stripe 256-Bit SSL / TLS 1.3 Bank-Grade End-to-End Encrypted Checkout</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 0.74rem; color: #a7f3d0; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="20 6 9 17 4 12"></polyline></svg> PCI-DSS Level 1 Verified
+      </span>
+      <a href="seller-hub.html" class="stripe-quick-fill-btn" style="text-decoration: none; background: rgba(255, 255, 255, 0.2); color: #ffffff;" title="Open Merchant Seller Hub">
+        <span>Seller Hub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Empty Cart State -->
+  <div id="stripe-empty-cart" class="hidden" style="max-width: 580px; margin: 80px auto; padding: 40px 24px; text-align: center; background: var(--s-sidebar); border: 1px solid var(--s-border); border-radius: 14px;">
+    <div style="width: 64px; height: 64px; border-radius: 50%; background: rgba(255, 20, 147, 0.1); border: 1px solid var(--stripe-pink); display: flex; align-items: center; justify-content: center; color: var(--stripe-pink); margin: 0 auto 16px;">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    </div>
+    <h2 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 8px;">Your Shopping Cart is Empty</h2>
+    <p style="color: var(--s-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px;">
+      Select items from our live marketplace to complete your secure commercial purchase.
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="index.html" class="stripe-pay-btn" style="width: auto; padding: 12px 28px; text-decoration: none; font-weight: 700;">
+        <span>Browse Aro Marketplace</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Active Stripe Checkout View -->
+  <main id="stripe-active-checkout" class="stripe-container">
+
+    <!-- Left Column: Order Overview & Buyer Protection -->
+    <aside class="stripe-sidebar">
+      <div>
+        <a href="index.html" class="stripe-back-link">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Return to Aro Marketplace</span>
+        </a>
+
+        <div class="stripe-brand-header">
+          <span class="stripe-brand-logo">Aro</span>
+          <span class="badge" style="background: rgba(255, 20, 147, 0.15); color: var(--stripe-pink); border-color: var(--stripe-pink);">BUYER PROTECTED</span>
+        </div>
+        <div class="stripe-brand-sub">Curated Independent Marketplace &bull; 72-Hour Love-It Protection</div>
+
+        <div class="stripe-total-display">
+          <div class="stripe-total-amount" id="stripe-grand-total">$0.00</div>
+          <div class="stripe-total-label">Total Due (Includes Shipping &amp; Sales Tax)</div>
+        </div>
+
+        <!-- Line Items -->
+        <div class="stripe-line-items" id="stripe-line-items">
+          <!-- Populated via js/stripe-checkout.js -->
+        </div>
+
+        <!-- Breakdown -->
+        <div class="stripe-breakdown">
+          <div class="stripe-breakdown-row">
+            <span>Items Subtotal</span>
+            <span id="stripe-subtotal" style="font-weight: 600; color: var(--s-text);">$0.00</span>
+          </div>
+          <div class="stripe-breakdown-row">
+            <span>Platform Fee (15%)</span>
+            <span style="color: var(--stripe-pink); font-weight: 600;">Included in Item Price</span>
+          </div>
+          <div class="stripe-breakdown-row">
+            <span>USPS Priority Shipping</span>
+            <span id="stripe-shipping" style="font-weight: 600;">Free (&lt; 1 lb &bull; On Us!)</span>
+          </div>
+          <div class="stripe-breakdown-row">
+            <span>State Sales Tax <span class="badge" id="stripe-tax-pill" style="font-size: 0.65rem; padding: 1px 6px;">CA 7.25%</span></span>
+            <span id="stripe-tax" style="font-weight: 600; color: var(--s-text);">$0.00</span>
+          </div>
+          <div class="stripe-breakdown-row" id="stripe-discount-row" style="display: none; color: #10b981;">
+            <span>Aro Store Credits Applied</span>
+            <span id="stripe-discount-val" style="font-weight: 700;">-$0.00</span>
+          </div>
+        </div>
+
+        <!-- Buyer Protection Badge -->
+        <div class="stripe-escrow-badge">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon" style="flex-shrink: 0; margin-top: 2px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <div>
+            <strong style="color: #10b981;">72 Hours to Love It Guarantee:</strong>
+            <p style="margin: 4px 0 0; color: var(--s-muted); font-size: 0.74rem; line-height: 1.4;">
+              Shop with total peace of mind! We protect your payment for 3 days after arrival so you can unbox, inspect, and adore your order before the seller gets paid.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="stripe-footer-powered">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Powered by <strong>Stripe</strong> &bull; 256-Bit / 258 Encryption &bull; TLS 1.3 &bull; PCI-DSS Level 1</span>
+      </div>
+    </aside>
+
+    <!-- Right Column: Stripe Checkout Payment Form -->
+    <section class="stripe-form-area">
+      <div class="stripe-form-container">
+
+        <!-- Error Notification Banner -->
+        <div id="stripe-error-box" class="hidden" style="margin-bottom: 20px; padding: 12px 16px; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #ef4444; font-size: 0.85rem; line-height: 1.45;"></div>
+
+        <!-- 256-Bit / 258 Encryption Verification Shield -->
+        <div class="stripe-encryption-shield" style="display: flex; align-items: center; justify-content: space-between; background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 10px 14px; margin-bottom: 20px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(16, 185, 129, 0.15); display: flex; align-items: center; justify-content: center; color: #10b981; flex-shrink: 0;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: #10b981; display: flex; align-items: center; gap: 6px;">
+                <span>256-Bit / 258 Encryption Active</span>
+                <span class="badge" style="font-size: 0.65rem; background: #10b981; color: #ffffff; padding: 1px 6px;">ENFORCED</span>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--s-muted);">
+                End-to-End AES-256-GCM Payload Cipher &bull; TLS 1.3 Strict Rail &bull; Zero Raw Card Storage
+              </div>
+            </div>
+          </div>
+          <span style="font-size: 0.7rem; font-weight: 700; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px;">256-Bit SSL</span>
+        </div>
+
+        <!-- Section 1: Payment Method Tabs -->
+        <div class="stripe-section-title">
+          <span>Payment Method</span>
+          <span style="font-size: 0.75rem; color: #10b981; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            256-Bit Tokenized
+          </span>
+        </div>
+
+        <div class="stripe-pay-methods">
+          <div class="stripe-method-tab active" data-method="card">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+            <span>Card</span>
+          </div>
+          <div class="stripe-method-tab" data-method="apple_pay">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            <span>Apple Pay</span>
+          </div>
+          <div class="stripe-method-tab" data-method="credits">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><line x1="12" y1="6" x2="12" y2="8"></line><line x1="12" y1="16" x2="12" y2="18"></line></svg>
+            <span>Aro Credits</span>
+          </div>
+        </div>
+
+        <form id="stripe-pay-form" onsubmit="return false;">
+
+          <!-- Section 2: Contact Information -->
+          <div class="stripe-input-group">
+            <label class="stripe-input-label" for="stripe-email">Contact Information</label>
+            <input type="email" id="stripe-email" class="stripe-input" placeholder="e.g. buyer@example.com" required>
+            <div style="font-size: 0.72rem; color: var(--s-muted); margin-top: 4px;">
+              Your Stripe payment receipt and USPS tracking confirmation will be sent here.
+            </div>
+          </div>
+
+          <!-- Section 3: Shipping Address -->
+          <div class="stripe-section-title" style="margin-top: 24px;">
+            <span>Shipping Address</span>
+          </div>
+
+          <div class="stripe-input-group">
+            <label class="stripe-input-label" for="stripe-name">Full Name</label>
+            <input type="text" id="stripe-name" class="stripe-input" placeholder="e.g. Alex Rivera" required>
+          </div>
+
+          <div class="stripe-input-group">
+            <label class="stripe-input-label" for="stripe-address">Street Address</label>
+            <input type="text" id="stripe-address" class="stripe-input" placeholder="123 Market St, Suite 400" required>
+          </div>
+
+          <div class="stripe-grid-3 stripe-input-group">
+            <div>
+              <label class="stripe-input-label" for="stripe-city">City</label>
+              <input type="text" id="stripe-city" class="stripe-input" placeholder="San Francisco" required>
+            </div>
+            <div>
+              <label class="stripe-input-label" for="stripe-state">State</label>
+              <select id="stripe-state" class="stripe-input" style="padding: 10px 8px; font-weight: 600;">
+                <!-- Populated via JS -->
+              </select>
+            </div>
+            <div>
+              <label class="stripe-input-label" for="stripe-zip">ZIP</label>
+              <input type="text" id="stripe-zip" class="stripe-input" placeholder="94103" maxlength="10" required>
+            </div>
+          </div>
+
+          <div class="stripe-input-group">
+            <label class="stripe-input-label" for="stripe-phone">Phone Number (For Delivery Updates)</label>
+            <input type="tel" id="stripe-phone" class="stripe-input" placeholder="(555) 234-5678">
+          </div>
+
+          <!-- Section 4: Card Details (Stripe Elements Look) -->
+          <div id="stripe-card-fields">
+            <div class="stripe-section-title" style="margin-top: 24px;">
+              <span>Card Information</span>
+              <span class="badge" id="stripe-card-brand-badge" style="font-size: 0.7rem;">Visa</span>
+            </div>
+
+            <div class="stripe-card-box">
+              <div class="stripe-card-row-top">
+                <input type="text" id="stripe-card-number" placeholder="Card number" maxlength="19" required autocomplete="cc-number">
+                <div style="display: flex; gap: 4px; color: var(--s-muted);">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                </div>
+              </div>
+              <div class="stripe-card-row-bot">
+                <input type="text" id="stripe-card-exp" placeholder="MM / YY" maxlength="5" required autocomplete="cc-exp">
+                <input type="text" id="stripe-card-cvc" placeholder="CVC" maxlength="4" required autocomplete="cc-csc">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4B: Apple Pay Alternative Notice -->
+          <div id="stripe-apple-fields" class="hidden" style="margin: 20px 0; padding: 20px; border-radius: 8px; background: var(--s-sidebar); border: 1px solid var(--s-border); text-align: center;">
+            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.75" class="aro-svg-icon" style="color: var(--s-text); margin-bottom: 8px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 4px;">Apple Pay &amp; Google Pay (Express Checkout)</div>
+            <p style="font-size: 0.8rem; color: var(--s-muted); margin: 0 0 14px;">Instant biometric device authorization with PCI tokenization.</p>
+          </div>
+
+          <!-- Section 4C: Aro Credits Alternative -->
+          <div id="stripe-credits-fields" class="hidden" style="margin: 20px 0; padding: 20px; border-radius: 8px; background: rgba(255, 20, 147, 0.08); border: 1px solid var(--stripe-pink); text-align: center;">
+            <div style="font-weight: 800; font-size: 1.1rem; color: var(--stripe-pink); margin-bottom: 4px;">Aro Store Credits</div>
+            <p style="font-size: 0.82rem; color: var(--s-muted); margin: 0 0 8px;">
+              Available Balance: <strong id="stripe-credits-balance-label" style="color: var(--s-text);">$0.00</strong>
+            </p>
+            <div style="font-size: 0.74rem; color: var(--s-muted);">
+              Applied 1:1 against your order total. Earned via member referrals ($20 referrer / $10 referee), community FAQ rewards, &amp; circular thrift donations.
+            </div>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div style="display: flex; align-items: center; gap: 8px; margin: 18px 0;">
+            <input type="checkbox" id="stripe-save-info" checked style="accent-color: var(--stripe-pink); width: 16px; height: 16px; cursor: pointer;">
+            <label for="stripe-save-info" style="font-size: 0.82rem; color: var(--s-muted); cursor: pointer;">
+              Save my information for secure 1-click checkout with Link
+            </label>
+          </div>
+
+          <!-- Pay Button -->
+          <button type="submit" class="stripe-pay-btn" id="stripe-pay-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span id="stripe-pay-btn-text">Pay $0.00</span>
+          </button>
+
+          <!-- Terms Notice -->
+          <div style="text-align: center; margin-top: 14px; font-size: 0.74rem; color: var(--s-muted); line-height: 1.45;">
+            By completing this payment, you authorize the charge and agree to Aro's <a href="terms.html" target="_blank" style="color: var(--stripe-pink); font-weight: 600;">Terms &amp; Conditions</a> and 72-Hour Buyer Protection Policy.
+          </div>
+
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fullscreen Stripe Processing Animation Overlay -->
+  <div id="stripe-processing-overlay" class="stripe-processing-overlay hidden">
+    <div class="stripe-spinner"></div>
+    <div class="stripe-proc-title">Processing Secure Payment</div>
+    <div class="stripe-proc-sub" id="stripe-proc-status">
+      Contacting Stripe Tokenization Engine...
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script src="js/security.js"></script>
+  <script src="js/store-data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/stripe-checkout.js"></script>
+</body>
+</html>

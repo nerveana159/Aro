@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline';">
+  <title>Payment Succeeded | Aro Order Confirmed</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/stripe-checkout.css">
+  <link rel="stylesheet" href="css/shipping-label.css">
+</head>
+<body class="stripe-checkout-body">
+
+  <!-- Top Stripe Test Mode Banner -->
+  <header class="stripe-test-banner">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span class="stripe-test-pill">STRIPE SUCCESS</span>
+      <span>Stripe Checkout Confirmed &bull; 72-Hour Buyer Protection Active</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <a href="index.html" class="stripe-quick-fill-btn" style="text-decoration: none; color: #92400e;">
+        <span>Return to Marketplace</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="stripe-success-container">
+    <div class="stripe-success-card">
+
+      <!-- Success Icon -->
+      <div class="stripe-success-icon-wrap">
+        <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 28px;">
+        <h1 style="font-size: 1.8rem; font-weight: 900; margin: 0 0 6px; letter-spacing: -0.5px; color: var(--s-text);">
+          Order Confirmed! You've Got Fabulous Taste.
+        </h1>
+        <p style="color: var(--s-muted); font-size: 0.95rem; margin: 0;">
+          Yay! Your payment was processed safely and your seller is already packing up your chic finds.
+        </p>
+      </div>
+
+      <!-- Order ID & Tracking Bar -->
+      <div style="background: var(--s-bg); border: 1px solid var(--s-border); border-radius: 10px; padding: 18px 20px; margin-bottom: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+        <div>
+          <div style="font-size: 0.72rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Aro Order ID</div>
+          <div id="succ-order-id" style="font-size: 1.05rem; font-weight: 800; color: var(--stripe-pink); font-family: monospace; margin-top: 2px;">
+            ARO-ORD-LOADING
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Order Status</div>
+          <div id="succ-order-status" style="font-size: 0.90rem; font-weight: 700; color: #60a5fa; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>In 72H Inspection Window</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Security &amp; 2FA</div>
+          <div id="succ-security-badge" style="font-size: 0.90rem; font-weight: 700; color: #10b981; margin-top: 2px; display: flex; align-items: center; gap: 4px;">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>2FA SMS Authorized</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">USPS Priority Tracking</div>
+          <div id="succ-tracking-id" style="font-size: 0.95rem; font-weight: 700; color: var(--s-text); font-family: monospace; margin-top: 2px;">
+            USPS-9400-XXXX-XXXX
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 0.72rem; color: var(--s-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Stripe Session ID</div>
+          <div id="succ-stripe-session" style="font-size: 0.85rem; font-weight: 600; color: var(--s-muted); font-family: monospace; margin-top: 2px;">
+            cs_live_checkout
+          </div>
+        </div>
+      </div>
+
+      <!-- 72-Hour Buyer Protection Notice -->
+      <div class="stripe-escrow-badge" style="margin-top: 0; margin-bottom: 24px;">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon" style="flex-shrink: 0; margin-top: 2px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <div>
+          <strong style="color: #10b981;">72 Hours to Love It Protection Active:</strong>
+          <p style="margin: 4px 0 0; color: var(--s-muted); font-size: 0.76rem; line-height: 1.45;">
+            Your payment is protected! Once USPS delivers your package, you have 3 full days to unbox, inspect, and fall in love before the seller receives their payout.
+          </p>
+        </div>
+      </div>
+
+      <!-- Purchased Items Receipt -->
+      <div style="margin-bottom: 24px;">
+        <div style="font-size: 0.9rem; font-weight: 800; color: var(--s-text); margin-bottom: 12px;">Order Summary</div>
+        <div id="succ-items-container" class="stripe-line-items">
+          <!-- Populated via JS -->
+        </div>
+
+        <div class="stripe-breakdown" style="margin-top: 12px; padding-top: 12px;">
+          <div class="stripe-breakdown-row">
+            <span>Subtotal</span>
+            <span id="succ-subtotal" style="font-weight: 600; color: var(--s-text);">$0.00</span>
+          </div>
+          <div class="stripe-breakdown-row">
+            <span>Shipping</span>
+            <span id="succ-shipping" style="font-weight: 600;">Free (&lt; 1 lb)</span>
+          </div>
+          <div class="stripe-breakdown-row">
+            <span>Sales Tax</span>
+            <span id="succ-tax" style="font-weight: 600; color: var(--s-text);">$0.00</span>
+          </div>
+          <div class="stripe-breakdown-row strong">
+            <span>Total Paid</span>
+            <span id="succ-total" style="color: var(--stripe-pink); font-size: 1.15rem;">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Thrift Donation Dividend Payout Banner (if applicable) -->
+        <div id="succ-dividend-banner" style="display: none; margin-top: 14px; padding: 10px 14px; border-radius: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.78rem; color: #10b981; line-height: 1.4;">
+          <strong>Thrift Circular Archive:</strong> <span id="succ-dividend-text">5% perpetual storage dividend disbursed to donor.</span>
+        </div>
+      </div>
+
+      <!-- Shipping Destination -->
+      <div style="background: var(--s-bg); border: 1px solid var(--s-border); border-radius: 8px; padding: 14px 18px; font-size: 0.82rem; color: var(--s-muted); margin-bottom: 24px;">
+        <strong style="color: var(--s-text);">Shipping Destination:</strong>
+        <span id="succ-shipping-dest" style="margin-left: 6px;">Customer Address</span>
+      </div>
+
+      <!-- Automated Commercial Shipping Label & Thermal Printing Dispatch Hub -->
+      <div style="background: var(--s-bg); border: 1px solid var(--s-border); border-radius: 12px; padding: 24px; margin-bottom: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <div style="font-size: 1.05rem; font-weight: 800; color: var(--s-text); display: flex; align-items: center; gap: 8px;">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Automated Shipping Label Ready (USPS Priority)</span>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--s-muted); margin-top: 2px;">
+              Auto-generated 4" &times; 6" Thermal Format &bull; Real Code 128 Barcode &bull; 72-Hour Protection Verified
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="stripe-pay-btn" id="btn-print-shipping-label" style="width: auto; padding: 10px 18px; margin-top: 0; font-size: 0.86rem;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              <span>Print 4&quot; &times; 6&quot; Label</span>
+            </button>
+            <button type="button" class="stripe-pay-btn" id="btn-print-packing-slip" style="width: auto; padding: 10px 18px; margin-top: 0; font-size: 0.86rem; background: var(--s-sidebar); border: 1px solid var(--s-border); color: var(--s-text);">
+              <span>Packing Slip</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Label Preview Box -->
+        <div class="shipping-label-preview-wrap" id="order-label-preview-box">
+          <!-- Populated dynamically via AroLabelPrinter.generateLabelHtml(order) -->
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 0.78rem; color: var(--s-muted); flex-wrap: wrap; gap: 10px;">
+          <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="chk-auto-print-enabled" checked style="accent-color: var(--stripe-pink); width: 16px; height: 16px;">
+            <span>Auto-prompt thermal print dialog on order placement</span>
+          </label>
+          <span>Print Format: <strong>4" &times; 6" Thermal Roll / Standard 8.5" &times; 11"</strong></span>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           Cross-Application Page Navigation Hub
+           ==================================================================== -->
+      <div style="border-top: 1px solid var(--s-border); padding-top: 28px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--s-text); margin: 0 0 4px;">
+            Explore All Aro Application Pages
+          </h2>
+          <p style="font-size: 0.8rem; color: var(--s-muted); margin: 0;">
+            Verify that all pages across the Aro platform are functional, connected, and synchronized.
+          </p>
+        </div>
+
+        <div class="stripe-app-nav-grid">
+          <a href="index.html" class="stripe-app-nav-btn">
+            <div class="stripe-app-nav-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              <span>Marketplace Home</span>
+            </div>
+            <div class="stripe-app-nav-desc">
+              Browse Market, Thrift, Auction, and Art stores. Add new items and manage cart.
+            </div>
+          </a>
+
+          <a href="index.html#orders" class="stripe-app-nav-btn">
+            <div class="stripe-app-nav-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <span>Customer Orders</span>
+            </div>
+            <div class="stripe-app-nav-desc">
+              View persistent customer order history and track the 72-hour buyer protection window.
+            </div>
+          </a>
+
+          <a href="faq.html" class="stripe-app-nav-btn">
+            <div class="stripe-app-nav-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              <span>Community FAQ</span>
+            </div>
+            <div class="stripe-app-nav-desc">
+              Explore user-curated FAQs and earn $5.00 community credits for endorsed answers.
+            </div>
+          </a>
+
+          <a href="seller-hub.html" class="stripe-app-nav-btn">
+            <div class="stripe-app-nav-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              <span>Seller Hub</span>
+            </div>
+            <div class="stripe-app-nav-desc">
+              Merchant command center: customize multi-market store identity, inventory allocations, and thermal labels.
+            </div>
+          </a>
+
+          <a href="terms.html" class="stripe-app-nav-btn">
+            <div class="stripe-app-nav-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <span>Terms &amp; Legalities</span>
+            </div>
+            <div class="stripe-app-nav-desc">
+              Review full store legalities, seller liabilities, 15% platform fees, and credit programs.
+            </div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Core Scripts -->
+  <script src="js/security.js"></script>
+  <script src="js/store-data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/shipping-label.js"></script>
+  <script>
+    (function() {
+      'use strict';
+      const params = new URLSearchParams(window.location.search);
+      const orderIdParam = params.get('orderId');
+      const sessionIdParam = params.get('session_id') || ('cs_live_' + Math.random().toString(36).substring(2, 16));
+
+      let state = AroData.getState();
+      if (state.themeColors && AroData.applyThemeColors) {
+        AroData.applyThemeColors(state.themeColors);
+      }
+      window.addEventListener('aro:state-changed', (e) => {
+        state = (e && e.detail && e.detail.state) ? e.detail.state : AroData.getState();
+        if (state.themeColors && AroData.applyThemeColors) {
+          AroData.applyThemeColors(state.themeColors);
+        }
+      });
+      const orders = state.customerOrders || state.orders || [];
+
+      // Find the order by ID or take the latest
+      let order = null;
+      if (orderIdParam) {
+        order = orders.find(o => o.id === orderIdParam || o.orderId === orderIdParam);
+      }
+      if (!order && orders.length > 0) {
+        order = orders[0]; // latest placed order
+      }
+      if (!order) {
+        order = AroLabelPrinter.getSampleOrder();
+      }
+
+      const orderIdEl = document.getElementById('succ-order-id');
+      const trackingIdEl = document.getElementById('succ-tracking-id');
+      const sessionEl = document.getElementById('succ-stripe-session');
+      const itemsContainer = document.getElementById('succ-items-container');
+      const subtotalEl = document.getElementById('succ-subtotal');
+      const shippingEl = document.getElementById('succ-shipping');
+      const taxEl = document.getElementById('succ-tax');
+      const totalEl = document.getElementById('succ-total');
+      const destEl = document.getElementById('succ-shipping-dest');
+      const divBanner = document.getElementById('succ-dividend-banner');
+      const divText = document.getElementById('succ-dividend-text');
+      const labelPreviewBox = document.getElementById('order-label-preview-box');
+      const btnPrintLabel = document.getElementById('btn-print-shipping-label');
+      const btnPrintSlip = document.getElementById('btn-print-packing-slip');
+      const chkAutoPrint = document.getElementById('chk-auto-print-enabled');
+
+      if (orderIdEl) orderIdEl.textContent = order.orderId || order.id || 'ARO-ORD-CONFIRMED';
+      if (trackingIdEl) trackingIdEl.textContent = order.trackingNumber || 'USPS-9400-PRE-SHIPMENT';
+      if (sessionEl) sessionEl.textContent = order.paymentDetails?.stripeSessionId || sessionIdParam;
+
+      function resolveItemImage(item) {
+        if (!item) return 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
+        let raw = item.image || item.imageUrl || item.img || (Array.isArray(item.images) && item.images[0]);
+        if ((!raw || typeof raw !== 'string' || !raw.trim()) && typeof AroData !== 'undefined' && AroData.getState) {
+          const st = AroData.getState();
+          const match = (st.products || []).find(p => p.id === item.id || p.title === item.title);
+          if (match) {
+            raw = match.image || match.imageUrl || match.img || (Array.isArray(match.images) && match.images[0]);
+          }
+        }
+        if (!raw || typeof raw !== 'string' || !raw.trim()) {
+          raw = item.storeType === 'Thrift'
+            ? 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80'
+            : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
+        }
+        return (typeof AroSecurity !== 'undefined' && AroSecurity.sanitizeURL)
+          ? (AroSecurity.sanitizeURL(raw) || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80')
+          : raw;
+      }
+
+      if (itemsContainer && order.items) {
+        itemsContainer.innerHTML = order.items.map(item => {
+          const safeImg = resolveItemImage(item);
+          const fallbackImg = item.storeType === 'Thrift'
+            ? 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&auto=format&fit=crop&q=80'
+            : 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80';
+          return `
+            <div class="stripe-item-row">
+              <div class="stripe-item-thumb-container">
+                <img src="${AroSecurity.escapeHTML(safeImg)}"
+                     alt="${AroSecurity.escapeHTML(item.title || 'Product Photo')}"
+                     class="stripe-item-thumb"
+                     loading="lazy"
+                     onerror="this.onerror=null; this.src='${fallbackImg}';">
+              </div>
+              <div class="stripe-item-info">
+                <div class="stripe-item-title">${AroSecurity.escapeHTML(item.title || 'Product Item')}</div>
+                <div class="stripe-item-meta">
+                  <span>Qty: ${item.quantity || 1}</span> &bull;
+                  <span>${AroSecurity.escapeHTML(item.storeType || 'Store')}</span>
+                  ${item.isDonation ? ' &bull; <span style="color: #10b981; font-weight: 700;">5% Thrift Dividend</span>' : ''}
+                </div>
+              </div>
+              <div class="stripe-item-price">$${((Number(item.price) || 0) * (item.quantity || 1)).toFixed(2)}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (subtotalEl) subtotalEl.textContent = `$${(Number(order.subtotal) || 0).toFixed(2)}`;
+      if (shippingEl) {
+        const ship = Number(order.shippingCost) || 0;
+        shippingEl.innerHTML = ship === 0 ? '<span style="color: #10b981; font-weight: 700;">Free (&lt; 1 lb)</span>' : `$${ship.toFixed(2)}`;
+      }
+      if (taxEl) taxEl.textContent = `$${(Number(order.taxAmount) || 0).toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${(Number(order.finalTotal || order.total) || 0).toFixed(2)}`;
+
+      if (destEl) {
+        const addr = order.shippingAddress;
+        if (addr) {
+          destEl.textContent = `${addr.fullName || 'Customer'}, ${addr.address || ''}, ${addr.city || ''}, ${addr.state || ''} ${addr.zip || ''}`;
+        }
+      }
+
+      // Update Order Status Badge
+      const statusEl = document.getElementById('succ-order-status');
+      if (statusEl && order) {
+        if (order.escrowStatus === 'released' || (order.status && order.status.toLowerCase().includes('released'))) {
+          statusEl.innerHTML = '<span style="color: #10b981; font-weight: 700;">Escrow Released &bull; Completed</span>';
+        } else if (order.escrowStatus === 'disputed_under_review' || (order.status && order.status.toLowerCase().includes('dispute'))) {
+          statusEl.innerHTML = '<span style="color: #ef4444; font-weight: 700;">Dispute Under Review</span>';
+        } else if (order.escrowStatus === 'refunded') {
+          statusEl.innerHTML = '<span style="color: #ef4444; font-weight: 700;">Refunded to Buyer</span>';
+        } else {
+          statusEl.innerHTML = `
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>In 72H Inspection Window (Active)</span>
+          `;
+        }
+      }
+
+      // Check for 5% storage dividends
+      const auditLogs = state.auditLogs || [];
+      const divLogs = auditLogs.filter(l => l.action.includes('Thrift Donation Storage Dividend') && l.details?.orderId === order.id);
+      if (divLogs.length > 0 && divBanner && divText) {
+        divBanner.style.display = 'block';
+        const donors = divLogs.map(l => `@${l.details.donor} (+$${l.details.amount.toFixed(2)})`).join(', ');
+        divText.textContent = `5% perpetual storage dividend successfully disbursed to donor(s): ${donors}`;
+      }
+
+      // Render 4x6 Thermal Label Preview
+      if (labelPreviewBox && typeof AroLabelPrinter !== 'undefined') {
+        labelPreviewBox.innerHTML = AroLabelPrinter.generateLabelHtml(order);
+      }
+
+      // Button Handlers
+      btnPrintLabel?.addEventListener('click', () => {
+        AroLabelPrinter.printShippingLabel(order, true, 'label');
+      });
+
+      btnPrintSlip?.addEventListener('click', () => {
+        AroLabelPrinter.printShippingLabel(order, true, 'packing_slip');
+      });
+
+      // Handle Auto-Print Setting
+      const printerConfig = AroLabelPrinter.getSettings();
+      if (chkAutoPrint) {
+        chkAutoPrint.checked = printerConfig.autoPrintOnOrder;
+        chkAutoPrint.addEventListener('change', (e) => {
+          AroLabelPrinter.saveSettings({ autoPrintOnOrder: e.target.checked });
+        });
+      }
+
+      // If auto-print enabled and newly completed, trigger print prompt
+      if (printerConfig.autoPrintOnOrder && params.get('orderId')) {
+        setTimeout(() => {
+          AroLabelPrinter.printShippingLabel(order, true, 'label');
+        }, 800);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline';">
+  <title>Merchant &amp; Artisan Seller Hub | Aro Multi-Market Commerce</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/store.css">
+  <link rel="stylesheet" href="css/shipping-label.css">
+  <style>
+    .seller-hub-page-header {
+      background: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 32px 0 24px;
+      margin-bottom: 32px;
+    }
+    .seller-metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .seller-metric-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform var(--transition-fast), border-color var(--transition-fast);
+    }
+    .seller-metric-card:hover {
+      border-color: var(--pink-primary);
+      transform: translateY(-2px);
+    }
+    .seller-metric-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .seller-metric-value {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .seller-metric-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    .seller-market-tabs {
+      display: flex;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      gap: 12px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .seller-market-tabs::-webkit-scrollbar,
+    .seller-market-tabs::-webkit-scrollbar-thumb,
+    .seller-market-tabs::-webkit-scrollbar-track,
+    .seller-market-tabs::-webkit-scrollbar-button,
+    .seller-market-tabs::-webkit-scrollbar-corner {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      background: transparent !important;
+    }
+    .seller-market-tab-btn {
+      flex: 1;
+      min-width: 160px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--surface-color);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    .seller-market-tab-btn:hover {
+      border-color: var(--pink-primary);
+      color: var(--pink-primary);
+      background: rgba(255, 20, 147, 0.06);
+    }
+    .seller-market-tab-btn.active {
+      color: #fff !important;
+      background: var(--pink-primary) !important;
+      border-color: var(--pink-primary) !important;
+      box-shadow: 0 4px 16px var(--pink-glow) !important;
+    }
+    .seller-hub-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+    .seller-hub-card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .seller-hub-card-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .seller-listings-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .seller-listings-table th {
+      text-align: left;
+      padding: 10px 14px;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .seller-listings-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+    .seller-listings-table tr:hover td {
+      background: var(--surface-hover);
+    }
+
+    /* Seller Hub Authentication Gate Rules */
+    body.seller-unauthenticated .seller-hub-page-header,
+    body.seller-unauthenticated main.container,
+    body.seller-unauthenticated #hub-quick-add-btn,
+    body.seller-unauthenticated #hub-signout-btn {
+      display: none !important;
+    }
+
+    body.seller-authenticated #seller-auth-gate {
+      display: none !important;
+    }
+
+    .seller-auth-gate-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      min-height: calc(100vh - 180px);
+    }
+
+    .seller-auth-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg, 12px);
+      max-width: 460px;
+      width: 100%;
+      padding: 36px 32px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 20px var(--pink-glow);
+      text-align: center;
+      animation: sellerGateFadeIn 0.3s ease;
+    }
+
+    [data-theme="light"] .seller-auth-card {
+      background: #ffffff;
+      border-color: #e5e7eb;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 15px rgba(255, 20, 147, 0.15);
+    }
+
+    @keyframes sellerGateFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .seller-metric-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .seller-metric-card {
+        padding: 12px 14px;
+      }
+      .seller-metric-value {
+        font-size: 1.3rem;
+      }
+      .seller-hub-page-header {
+        padding: 18px 0 14px;
+        margin-bottom: 18px;
+      }
+      .mobile-app-bottom-bar {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 999 !important;
+      }
+      body {
+        padding-bottom: 76px;
+      }
+      .site-footer {
+        padding-bottom: 90px !important;
+      }
+    }
+  </style>
+</head>
+<body class="seller-unauthenticated" style="background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Global Header Navigation -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html#store-hero-section" class="brand-logo" title="Aro Marketplace — Return to Storefront">
+        <span class="aro-neon-text" style="font-size: 2.1rem;">Aro</span>
+        <span class="brand-dot"></span>
+        <span class="brand-tag">Seller Hub</span>
+      </a>
+
+      <div class="header-actions" style="display: flex; align-items: center; gap: 10px;">
+        <a href="index.html" class="btn-secondary" style="font-size: 0.82rem; padding: 8px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Storefront</span>
+        </a>
+        <a href="faq.html" class="btn-secondary" style="font-size: 0.82rem; padding: 8px 14px; text-decoration: none;">Help &amp; FAQ</a>
+        <a href="terms.html" class="btn-secondary" style="font-size: 0.82rem; padding: 8px 14px; text-decoration: none;">Seller Terms</a>
+        <button type="button" class="btn-primary" id="hub-quick-add-btn" onclick="AroSellerHub.openAddListingModal()" style="font-size: 0.82rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Add Listing</span>
+        </button>
+
+        <!-- Sign Out Button (Shown when logged in) -->
+        <button type="button" class="btn-secondary" id="hub-signout-btn" onclick="AroSellerHub.handleSignOut()" style="font-size: 0.82rem; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Sign out of merchant account">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span>Sign Out</span>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button type="button" class="btn-icon" id="theme-toggle-btn" onclick="AroSellerHub.toggleTheme()" title="Toggle Light/Dark Theme" style="width: 38px; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-main); display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon" id="theme-icon-dark"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Merchant Authentication Gate (Shown when visitor is not logged in) -->
+  <div id="seller-auth-gate" class="seller-auth-gate-wrapper">
+    <div class="seller-auth-card">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(255, 20, 147, 0.12); border: 1px solid var(--pink-primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; color: var(--pink-primary); box-shadow: 0 0 15px var(--pink-glow);">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+
+      <span class="badge" style="background: rgba(255, 20, 147, 0.15); color: var(--pink-primary); margin-bottom: 10px;">
+        Restricted Merchant Access
+      </span>
+
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text-main); margin: 6px 0 8px; letter-spacing: -0.02em;">
+        Seller Hub Login Required
+      </h2>
+
+      <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.5; margin: 0 0 22px;">
+        You must be signed in with a verified account to view the Seller Hub, manage storefront listings, print thermal shipping labels, and fulfill orders.
+      </p>
+
+      <div id="seller-auth-error" style="display: none; background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; color: #f87171; font-size: 0.8rem; font-weight: 600; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 18px; text-align: left;">
+      </div>
+
+      <form id="seller-login-form" onsubmit="AroSellerHub.handleSellerLogin(event)" style="text-align: left;">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+            Username or Email:
+          </label>
+          <input type="text" id="seller-login-id" class="customizer-input" placeholder="e.g. heaven or your merchant username" required autocomplete="username">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+            Password:
+          </label>
+          <input type="password" id="seller-login-pass" class="customizer-input" placeholder="Enter your password" required autocomplete="current-password">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 18px;">
+          <input type="checkbox" id="seller-stay-signed-in" style="accent-color: var(--pink-primary); width: 16px; height: 16px; cursor: pointer;">
+          <label for="seller-stay-signed-in" style="font-size: 0.8rem; color: var(--text-main); cursor: pointer; user-select: none;">
+            Stay signed in on this device
+          </label>
+        </div>
+
+        <button type="submit" id="seller-login-btn" class="btn-primary" style="width: 100%; padding: 12px; font-weight: 700; font-size: 0.9rem; justify-content: center; display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          <span>Sign In to Seller Hub</span>
+        </button>
+      </form>
+
+      <div style="margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;">
+        <a href="index.html" class="btn-secondary" style="padding: 9px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <span>Return to Storefront</span>
+        </a>
+        <span style="color: var(--text-muted); font-size: 0.78rem;">
+          Don't have an account? <a href="index.html#auth" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Create a free merchant account</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hub Banner & Overview Header -->
+  <div class="seller-hub-page-header">
+    <div class="container" style="max-width: 1200px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <span class="badge" style="background: rgba(255, 20, 147, 0.15); color: var(--pink-primary); margin-bottom: 8px;">
+            Merchant &amp; Artisan Operations
+          </span>
+          <h1 style="font-size: 2.1rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.02em; margin: 4px 0;">
+            Seller Hub &amp; Multi-Market Command Center
+          </h1>
+          <p style="color: var(--text-muted); font-size: 0.92rem; max-width: 760px; margin: 6px 0 0;">
+            Configure your distinct storefront identities, inventory allocations, lead times, free shipping policies, and 72-hour buyer protection fulfillment across AroMarket, Thrift, Auction, and Art.
+          </p>
+        </div>
+
+        <!-- Current Active Seller Account Switcher Pill -->
+        <div style="background: var(--bg-color); border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 18px; display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--pink-primary), #8a2be2); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(255, 20, 147, 0.35);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+              <span id="hub-seller-role-badge" class="badge" style="background: rgba(255, 20, 147, 0.18); color: var(--pink-primary); font-size: 0.65rem; font-weight: 800; padding: 2px 8px; letter-spacing: 0.4px;">Owner Seller Account</span>
+            </div>
+            <strong id="hub-seller-username" style="font-size: 1.05rem; color: var(--text-main); display: block; line-height: 1.2;">@heaven</strong>
+            <div id="hub-seller-balance" style="font-size: 0.74rem; color: #10b981; font-weight: 700; margin-top: 2px;">Pending Escrow Payout: $0.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Body Content Container -->
+  <main class="container" style="max-width: 1200px; padding: 0 20px 60px; flex: 1;">
+
+    <!-- Metric Cards Grid -->
+    <div class="seller-metric-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <!-- Metric 1: Active Listings -->
+      <div class="seller-metric-card">
+        <div>
+          <div class="seller-metric-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span>Active Listings</span>
+          </div>
+          <div class="seller-metric-value" id="stat-active-listings">0</div>
+        </div>
+        <div class="seller-metric-sub">Across commercial store formats (AroMarket, Thrift, Auction, Local)</div>
+      </div>
+
+      <!-- Metric 2: Platform Commission Rate -->
+      <div class="seller-metric-card">
+        <div>
+          <div class="seller-metric-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Platform Commission</span>
+          </div>
+          <div class="seller-metric-value" style="color: var(--pink-primary);">15% Flat</div>
+        </div>
+        <div class="seller-metric-sub">Free shipping on &lt; 1 lb &bull; 0% fee on tips &bull; Stripe auto-split</div>
+      </div>
+    </div>
+
+    <!-- Multi-Market Format Tabs (Market, Thrift, Auction, Local, Art) -->
+    <div class="seller-market-tabs" id="seller-market-tabs" role="tablist">
+      <button type="button" class="seller-market-tab-btn active" data-market="Market" onclick="AroSellerHub.selectMarket('Market')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        <span>AroMarket (Retail &amp; Vintage)</span>
+      </button>
+      <button type="button" class="seller-market-tab-btn" data-market="Thrift" onclick="AroSellerHub.selectMarket('Thrift')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+        <span>Thrift (Donated Only)</span>
+      </button>
+      <button type="button" class="seller-market-tab-btn" data-market="Auction" onclick="AroSellerHub.selectMarket('Auction')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="m14 13 5 5m-4-7 3-3a2.121 2.121 0 0 1 3 3l-3 3m-7-2 6 6M2 21h7M2 17l5-5"></path></svg>
+        <span>Auction (Live Bids)</span>
+      </button>
+      <button type="button" class="seller-market-tab-btn" data-market="Local" onclick="AroSellerHub.selectMarket('Local')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        <span>Local (Safe In-Person Meetups)</span>
+      </button>
+      <!-- Staged: Artist page safely preserved for upcoming artist onboarding update -->
+      <button type="button" class="seller-market-tab-btn" data-market="Art" style="display: none;" aria-hidden="true" onclick="AroSellerHub.selectMarket('Art')">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path></svg>
+        <span>Art &amp; Studio (Handmade)</span>
+      </button>
+    </div>
+
+    <!-- Active Market Live Preview Banner -->
+    <div class="seller-hub-card" style="padding: 20px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+          Live Storefront Appearance Preview
+        </span>
+        <a href="index.html" id="hub-preview-store-link" class="btn-secondary" style="font-size: 0.78rem; padding: 6px 14px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          <span id="hub-preview-store-label">View AroMarket Storefront Live</span>
+        </a>
+      </div>
+
+      <div class="seller-hub-preview-banner" id="hub-preview-banner" style="margin-bottom: 0; min-height: 140px;">
+        <div class="seller-hub-preview-overlay"></div>
+        <div class="seller-hub-preview-meta" style="display: flex; align-items: flex-end; justify-content: space-between; width: 100%;">
+          <div>
+            <span class="badge" id="hub-preview-market-badge" style="background: var(--pink-primary); color: #fff; font-weight: 700; margin-bottom: 6px; display: inline-flex; align-items: center; gap: 6px;">
+              AroMarket Storefront
+            </span>
+            <h2 id="hub-preview-title" style="margin: 0; font-size: 1.5rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.85);">
+              Store Title
+            </h2>
+            <p id="hub-preview-tagline" style="margin: 4px 0 0; font-size: 0.85rem; color: #e2e8f0; text-shadow: 0 1px 4px rgba(0,0,0,0.85);">
+              Storefront tagline and customer promise
+            </p>
+          </div>
+          <div style="text-align: right;">
+            <span class="badge" id="hub-preview-status-badge" style="background: rgba(16, 185, 129, 0.95); color: #fff; font-weight: 700;">
+              Open &amp; Fulfilling
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Storefront Customization & Dispatch Policies Settings -->
+    <div class="seller-hub-card">
+      <div class="seller-hub-card-title">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          <span id="hub-form-heading">AroMarket Storefront Identity &amp; Commercial Policies</span>
+        </div>
+        <span class="badge" id="hub-form-market-pill" style="font-size: 0.72rem;">AroMarket</span>
+      </div>
+      <p class="seller-hub-card-subtitle">
+        Update your specific store branding, dispatch turnaround speeds, bundle volume discounts, and fulfillment lead times for this market format.
+      </p>
+
+      <form id="seller-hub-settings-form" onsubmit="AroSellerHub.saveSettings(event)">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          
+          <!-- Store Name -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Store Name:
+            </label>
+            <input type="text" id="setting-store-name" class="customizer-input" required>
+          </div>
+
+          <!-- Tagline -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Storefront Tagline / Bio:
+            </label>
+            <input type="text" id="setting-tagline" class="customizer-input" required>
+          </div>
+
+          <!-- Banner Image URL & File Upload -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Banner Image (Upload Media or Enter URL):
+            </label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="file" id="setting-banner-file" accept="image/*" class="customizer-input" style="flex: 1; min-width: 170px; padding: 6px;">
+              <input type="url" id="setting-banner-url" class="customizer-input" placeholder="https://..." style="flex: 1; min-width: 170px;" required>
+            </div>
+          </div>
+
+          <!-- Accent Theme Color -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              AroMarket Accent Color:
+            </label>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="color" id="setting-accent-color-picker" style="width: 44px; height: 38px; border: none; border-radius: var(--radius-sm); cursor: pointer; background: transparent;">
+              <input type="text" id="setting-accent-color-text" class="customizer-input" style="flex: 1;" required>
+            </div>
+          </div>
+
+          <!-- Store Status -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Store Operating Status:
+            </label>
+            <select id="setting-status" class="customizer-input">
+              <option value="open">Open &amp; Accepting Orders</option>
+              <option value="paused">Vacation Mode (Storefront Paused)</option>
+            </select>
+          </div>
+
+          <!-- Dispatch Time -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Dispatch &amp; Handling Speed:
+            </label>
+            <select id="setting-dispatch-time" class="customizer-input">
+              <option value="same_day">Same-Day Dispatch (Under 24 Hours)</option>
+              <option value="1_2_days">1–2 Business Days Standard</option>
+              <option value="3_5_days">3–5 Business Days (Custom Handmade)</option>
+            </select>
+          </div>
+
+          <!-- Free Shipping Threshold -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Free Shipping Over ($ Minimum):
+            </label>
+            <input type="number" id="setting-free-shipping" class="customizer-input" min="0" step="5" required>
+            <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; display: block;">
+              Note: Orders under 1 lb automatically receive 100% platform-funded free shipping.
+            </span>
+          </div>
+
+          <!-- Bundle Discount % -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Bundle Discount Rate (%):
+            </label>
+            <input type="number" id="setting-bundle-discount" class="customizer-input" min="0" max="50" step="5" required>
+          </div>
+        </div>
+
+        <!-- Policy Note -->
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+            AroMarket Specific Policy &amp; Customer Guarantee:
+          </label>
+          <input type="text" id="setting-policy-note" class="customizer-input" required>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="submit" class="btn-primary" style="padding: 10px 24px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+            <span id="hub-save-btn-label">Save Storefront Settings</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Storefront Page Visual UI & Box Customizer (Strictly Scoped to Seller's Own Page) -->
+    <div class="seller-hub-card" id="seller-page-ui-customizer-card">
+      <div class="seller-hub-card-title">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.5 0l-2.5-2.5c-1-1-1-2.5 0-3.5L15.3 2.7c1-1 2.5-1 3.5 0l2.5 2.5c1 1 1 2.5 0 3.5z"></path><line x1="14.5" y1="6.5" x2="12" y2="9"></line><line x1="11.5" y1="9.5" x2="9" y2="12"></line><line x1="8.5" y1="12.5" x2="6" y2="15"></line></svg>
+          <span id="hub-ui-builder-title">Store Page Visual UI &amp; Box Customizer</span>
+        </div>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 0.72rem; display: inline-flex; align-items: center; gap: 4px;">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Scoped to Your Storefront Page Only &bull; Public Platform Protected
+        </span>
+      </div>
+      <p class="seller-hub-card-subtitle">
+        Adjust the visual layout, box sizing, top announcement bars, bottom assurance badges, and embedded media for your personal storefront page. Public platform styles, global header/hero, and other merchants' storefronts are strictly protected and remain unaffected.
+      </p>
+
+      <!-- Interactive Storefront Page Canvas Preview -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">
+            Interactive Store Page Canvas Preview (Double-Click Box Below to Edit)
+          </span>
+          <button type="button" class="btn-primary" onclick="AroSellerHub.openPageUiModal()" style="font-size: 0.78rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            <span>Open Visual Box Editor</span>
+          </button>
+        </div>
+
+        <!-- Customizable Canvas Container -->
+        <div id="seller-store-preview-canvas" class="seller-customizable-page-box" data-customizable="true" ondblclick="AroSellerHub.openPageUiModal()" title="Double-click to edit your storefront page layout" style="background: var(--bg-color); border: 2px dashed var(--pink-border); border-radius: var(--radius-md); padding: 20px; transition: all var(--transition-fast); position: relative; cursor: pointer; max-width: 100%; margin: 0 auto;">
+          
+          <!-- Top Announcement Bar -->
+          <div id="canvas-top-bar" class="seller-canvas-top-bar" style="background: rgba(255, 20, 147, 0.12); color: var(--pink-primary); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+              <span id="canvas-top-bar-text">Official Merchant Verified Storefront &bull; 72-Hour Buyer Protection</span>
+            </div>
+            <span class="badge" style="font-size: 0.68rem; background: var(--pink-primary); color: #fff;">Store Announcement</span>
+          </div>
+
+          <!-- Storefront Header Area -->
+          <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+            <div id="canvas-store-avatar" style="width: 58px; height: 58px; border-radius: 50%; background: var(--pink-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800;">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 id="canvas-store-title" style="margin: 0; font-size: 1.25rem; font-weight: 800; color: var(--text-main);">Store Name</h3>
+                <span class="badge" id="canvas-store-market-badge" style="font-size: 0.7rem; background: var(--pink-primary); color: #fff;">AroMarket</span>
+              </div>
+              <p id="canvas-store-tagline" style="margin: 4px 0 0; font-size: 0.82rem; color: var(--text-muted);">Storefront tagline</p>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Double-Click Box</span>
+              <span class="badge" style="font-size: 0.7rem; background: rgba(16, 185, 129, 0.15); color: #10b981;">Custom Page Canvas</span>
+            </div>
+          </div>
+
+          <!-- Embedded Media Container -->
+          <div id="canvas-media-container" style="display: none; margin-top: 14px; border-radius: var(--radius-sm); overflow: hidden; height: 160px; background: #000; position: relative;">
+            <video id="canvas-video" autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
+            <img id="canvas-photo" src="" alt="Custom media" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+          </div>
+
+          <!-- Bottom Policy / Trust Bar -->
+          <div id="canvas-bottom-bar" class="seller-canvas-bot-bar" style="background: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 14px; border-radius: var(--radius-sm); font-size: 0.76rem; display: flex; align-items: center; justify-content: space-between; margin-top: 14px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span id="canvas-bottom-bar-text">Buyer gets what they requested or money back &bull; 72-hr protection window</span>
+            </div>
+            <span style="font-size: 0.7rem; color: var(--pink-primary); font-weight: 700;">Verified Merchant Guarantee</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Scoped Layout Adjustment Form -->
+      <form id="seller-page-ui-form" onsubmit="AroSellerHub.savePageUiCustomization(event)">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px;">
+          
+          <!-- Box Width -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Storefront Box Width:
+            </label>
+            <select id="ui-input-box-width" class="customizer-input" onchange="AroSellerHub.previewPageUiChanges()">
+              <option value="100%">100% Full Width (Edge to Edge)</option>
+              <option value="90%">90% Comfortable Margins</option>
+              <option value="80%">80% Compact Focus</option>
+              <option value="1100px">1100px Fixed Centered Box</option>
+            </select>
+          </div>
+
+          <!-- Box Min Height -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Storefront Box Minimum Height:
+            </label>
+            <select id="ui-input-box-height" class="customizer-input" onchange="AroSellerHub.previewPageUiChanges()">
+              <option value="auto">Auto (Content-Driven)</option>
+              <option value="380px">380px Standard Height</option>
+              <option value="460px">460px Prominent Showcase</option>
+              <option value="540px">540px Hero Exhibition</option>
+            </select>
+          </div>
+
+          <!-- Top Announcement Bar Toggle -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Store Announcement Top Bar:
+            </label>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+              <input type="checkbox" id="ui-input-has-topbar" checked onchange="AroSellerHub.previewPageUiChanges()" style="width: 16px; height: 16px; accent-color: var(--pink-primary); cursor: pointer;">
+              <span style="font-size: 0.82rem; color: var(--text-main);">Enable Top Announcement Bar</span>
+            </div>
+          </div>
+
+          <!-- Top Bar Text -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Top Announcement Text:
+            </label>
+            <input type="text" id="ui-input-topbar-text" class="customizer-input" value="Official Merchant Verified Storefront • 72-Hour Buyer Protection" oninput="AroSellerHub.previewPageUiChanges()">
+          </div>
+
+          <!-- Bottom Bar Toggle -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Store Guarantee Bottom Bar:
+            </label>
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 6px;">
+              <input type="checkbox" id="ui-input-has-botbar" checked onchange="AroSellerHub.previewPageUiChanges()" style="width: 16px; height: 16px; accent-color: var(--pink-primary); cursor: pointer;">
+              <span style="font-size: 0.82rem; color: var(--text-main);">Enable Bottom Assurance Bar</span>
+            </div>
+          </div>
+
+          <!-- Bottom Bar Text -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Bottom Assurance Text:
+            </label>
+            <input type="text" id="ui-input-botbar-text" class="customizer-input" value="Buyer gets what they requested or money back &bull; 72-hr protection window" oninput="AroSellerHub.previewPageUiChanges()">
+          </div>
+
+          <!-- Media Embed Type -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Embed Media in Your Store Box:
+            </label>
+            <select id="ui-input-media-type" class="customizer-input" onchange="AroSellerHub.previewPageUiChanges()">
+              <option value="none">None (Standard Layout)</option>
+              <option value="photo">High-Res Promo Photo</option>
+              <option value="video">Looping Brand Video (.mp4)</option>
+            </select>
+          </div>
+
+          <!-- Media Embed URL & File Upload -->
+          <div class="form-group">
+            <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">
+              Media Embed (Upload Media or Enter URL):
+            </label>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <input type="file" id="ui-input-media-file" accept="image/*,video/mp4" class="customizer-input" style="flex: 1; min-width: 170px; padding: 6px;">
+              <input type="url" id="ui-input-media-url" class="customizer-input" placeholder="https://..." style="flex: 1; min-width: 170px;" oninput="AroSellerHub.previewPageUiChanges()">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; border-top: 1px solid var(--border-color); padding-top: 16px;">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            <strong style="color: var(--text-main);">Security Scope Enforced:</strong> Changes only affect your merchant storefront and product booth. Public homepage and owner mission controls are untouched.
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn-secondary" onclick="AroSellerHub.resetPageUiToDefaults()" style="font-size: 0.8rem; padding: 8px 14px;">
+              Reset to Defaults
+            </button>
+            <button type="submit" class="btn-primary" style="font-size: 0.82rem; padding: 8px 20px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+              <span>Save My Store Page UI</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Active Listings in this Store Format -->
+    <div class="seller-hub-card">
+      <div class="seller-hub-card-title" style="flex-wrap: wrap; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span id="hub-listings-heading">Active Listings in AroMarket</span>
+          <span class="badge" id="hub-listings-count-badge" style="background: rgba(255, 20, 147, 0.15); color: var(--pink-primary); font-size: 0.72rem;">0 Items</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <input type="text" id="hub-listings-search" placeholder="Search by title, SKU..." class="customizer-input" style="font-size: 0.8rem; padding: 7px 12px; width: 190px;" oninput="AroSellerHub.filterListingsTable()">
+          <select id="hub-listings-filter-status" class="customizer-input" style="font-size: 0.8rem; padding: 7px 10px; width: auto;" onchange="AroSellerHub.filterListingsTable()">
+            <option value="all">All Statuses</option>
+            <option value="active">Active (Live)</option>
+            <option value="paused">Paused</option>
+          </select>
+          <select id="hub-listings-filter-market" class="customizer-input" style="font-size: 0.8rem; padding: 7px 10px; width: auto;" onchange="AroSellerHub.filterListingsTable()">
+            <option value="current">Current Store Type</option>
+            <option value="all">All My Storefronts</option>
+          </select>
+          <button type="button" class="btn-secondary" onclick="AroSellerHub.removeAllUserListings()" style="font-size: 0.78rem; padding: 7px 14px; display: inline-flex; align-items: center; gap: 6px; border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" title="Remove all listings you have added">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span>Remove All My Listings</span>
+          </button>
+          <button type="button" class="btn-primary" onclick="AroSellerHub.openAddListingModal()" style="font-size: 0.78rem; padding: 7px 14px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Add New Product</span>
+          </button>
+        </div>
+      </div>
+      <p class="seller-hub-card-subtitle">
+        Manage active products, edit details, pause or resume live storefront availability, adjust stock quantities, and remove listings.
+      </p>
+
+      <div style="overflow-x: auto;">
+        <table class="seller-listings-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Market</th>
+              <th>Format</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock / Status</th>
+              <th style="min-width: 260px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="hub-listings-table-body">
+            <!-- Dynamically populated via js/seller-hub.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Shipping Label & Order Fulfillment Section -->
+    <div class="seller-hub-card">
+      <div class="seller-hub-card-title">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <span>Automated Shipping Label &amp; Order Fulfillment Hub</span>
+        </div>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 0.72rem;">USPS e-VS Verified</span>
+      </div>
+      <p class="seller-hub-card-subtitle">
+        Generate shipping labels and packing slips. Compatible with 4&quot; &times; 6&quot; thermal and standard desktop printers.
+      </p>
+
+      <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+        <div style="font-size: 0.85rem; max-width: 580px;">
+          <strong style="color: var(--text-main); display: block; margin-bottom: 2px;">Printer Setup</strong>
+          <span style="color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; display: block;">
+            Supports 4&quot; &times; 6&quot; direct thermal printers or standard paper with tape.
+          </span>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="btn-secondary" onclick="AroSellerHub.printCalibrationThermalLabel()" style="font-size: 0.8rem; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Printer Calibration Label</span>
+          </button>
+          <button type="button" class="btn-secondary" onclick="AroSellerHub.printCalibrationPackingSlip()" style="font-size: 0.8rem; padding: 8px 14px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+            <span>Printer Calibration Slip</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pending Orders List -->
+      <div id="hub-escrow-orders-container">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- Seller Legal Liabilities & Platform Compliance Summary -->
+    <div class="seller-hub-card" style="border-left: 4px solid var(--pink-primary);">
+      <div class="seller-hub-card-title">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          <span>Merchant Warranties &amp; Policy Summary</span>
+        </div>
+        <a href="terms.html" class="btn-secondary" style="font-size: 0.75rem; padding: 4px 10px; text-decoration: none;">View Terms</a>
+      </div>
+      <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; margin-top: 6px;">
+        Sellers warrant legal item ownership, accurate environmental disclosures, and prompt fulfillment. Aro does not check or verify authenticity; Aro guarantees buyers receive what they requested or their money back in full under the 72-hour buyer protection window. If a seller fails to ship the requested item, the buyer receives a full refund and the seller forfeits funds; when satisfied orders pass the 72-hour inspection window, the buyer forfeits the funds to the seller. See <a href="terms.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Terms of Service</a> for complete commercial terms.
+      </p>
+    </div>
+
+  </main>
+
+  <!-- Universal 4"x6" Thermal Shipping Label Preview Modal -->
+  <div class="customizer-modal hidden" id="shipping-label-modal" role="dialog" aria-modal="true" aria-labelledby="label-modal-title">
+    <div class="customizer-backdrop" id="shipping-label-backdrop" onclick="AroSellerHub.closeLabelModal()"></div>
+    <div class="customizer-card" style="max-width: 580px;">
+      <div class="customizer-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          <h3 id="label-modal-title" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main);">Shipping Label Preview</h3>
+        </div>
+        <button type="button" class="customizer-close" onclick="AroSellerHub.closeLabelModal()">&times;</button>
+      </div>
+      <div class="customizer-body" style="padding: 16px 20px; max-height: 540px; overflow-y: auto;">
+        <div class="shipping-label-preview-wrap" id="shipping-label-preview-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+      <div class="customizer-footer" style="padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" class="btn-secondary" id="btn-modal-print-slip" onclick="AroSellerHub.printCurrentPackingSlip()" style="font-size: 0.8rem; padding: 8px 14px;">Print Packing Slip</button>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn-secondary" onclick="AroSellerHub.closeLabelModal()">Close</button>
+          <button type="button" class="btn-primary" onclick="AroSellerHub.triggerCurrentPrint()" style="font-size: 0.82rem; padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            <span>Print 4&quot; &times; 6&quot; Label</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Add Listing Modal -->
+  <div class="customizer-modal hidden" id="quick-add-listing-modal" role="dialog" aria-modal="true" aria-labelledby="quick-add-title">
+    <div class="customizer-backdrop" onclick="AroSellerHub.closeAddListingModal()"></div>
+    <div class="customizer-card" style="max-width: 640px;">
+      <div class="customizer-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <h3 id="quick-add-title" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">Add New Listing to AroMarket</h3>
+        </div>
+        <button type="button" class="customizer-close" onclick="AroSellerHub.closeAddListingModal()">&times;</button>
+      </div>
+      <form id="quick-add-listing-form" onsubmit="AroSellerHub.submitNewListing(event)">
+        <input type="hidden" id="add-item-id" value="">
+        <div class="customizer-body" style="padding: 20px; max-height: 70vh; overflow-y: auto;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+            <div class="form-group" style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Product Title:</label>
+              <input type="text" id="add-item-title" class="customizer-input" placeholder="e.g. Vintage Leather Trench Coat or Hand-Forged Damascus Blade" required>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Target Store Format:</label>
+              <select id="add-item-market" class="customizer-input" onchange="AroSellerHub.updateListingFeeBreakdown()">
+                <option value="Market">AroMarket (Standard Retail)</option>
+                <option value="Thrift">Thrift (Circular Archive)</option>
+                <option value="Auction">Auction (Timed Reserve)</option>
+                <option value="Local">Local (Safe In-Person Meetups)</option>
+                <option value="Art">Art (Artisan Studios)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Listing Format:</label>
+              <select id="add-item-format" class="customizer-input">
+                <option value="individual">Individual Item</option>
+                <option value="bundle">Labelled Bundle</option>
+                <option value="donation">Storage Dividend Donation</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Price ($ USD):</label>
+              <input type="number" id="add-item-price" class="customizer-input" min="1" step="0.5" placeholder="45.00" oninput="AroSellerHub.updateListingFeeBreakdown()" required>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Estimated Shipping Weight:</label>
+              <select id="add-item-weight" class="customizer-input" onchange="AroSellerHub.updateListingFeeBreakdown()">
+                <option value="under_1lb">Under 1.0 lb (100% Platform-Funded Free Shipping)</option>
+                <option value="1_to_3lb">1 to 3 lbs (Standard Commercial Carrier - $4.99)</option>
+                <option value="over_3lb">Over 3 lbs (Heavy / Bulky Transit - $8.99)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Stock / Qty Available:</label>
+              <input type="number" id="add-item-stock" class="customizer-input" min="0" value="1" required>
+            </div>
+
+            <div class="form-group">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Listing Status (Play / Pause):</label>
+              <select id="add-item-status" class="customizer-input">
+                <option value="active">Active (Visible &amp; Fulfilling on Storefront)</option>
+                <option value="paused">Paused (Temporarily Hidden from Storefront)</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Department / Category:</label>
+              <input type="text" id="add-item-category" class="customizer-input" placeholder="e.g. Vintage Collectibles, Audio Gear, Apparel..." value="Curated">
+            </div>
+
+            <!-- Live Payout & Fee Breakdown Card (Auto Stripe Settlement) -->
+            <div id="hub-listing-fee-breakdown" style="grid-column: span 2; background: rgba(255, 20, 147, 0.05); border: 1.5px solid var(--pink-border); border-radius: var(--radius-sm); padding: 14px 18px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <strong style="color: var(--pink-primary); font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px;">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  <span>Live Seller Cut &amp; Fee Breakdown (Stripe Automated Payout)</span>
+                </strong>
+                <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 0.65rem; font-weight: 800;">Stripe Auto-Split</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; font-size: 0.78rem;">
+                <div style="background: var(--bg-color); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="color: var(--text-muted); font-size: 0.68rem; font-weight: 700;">LISTING PRICE</div>
+                  <div style="font-weight: 900; font-size: 1.05rem; color: var(--text-main); margin-top: 2px;" id="hub-breakdown-price">$0.00</div>
+                </div>
+                <div style="background: var(--bg-color); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="color: var(--text-muted); font-size: 0.68rem; font-weight: 700;">ARO FEE (15%)</div>
+                  <div style="font-weight: 900; font-size: 1.05rem; color: #ef4444; margin-top: 2px;" id="hub-breakdown-fee">-$0.00</div>
+                </div>
+                <div style="background: var(--bg-color); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="color: var(--text-muted); font-size: 0.68rem; font-weight: 700;">SHIPPING COST</div>
+                  <div style="font-weight: 900; font-size: 1.05rem; color: #10b981; margin-top: 2px;" id="hub-breakdown-shipping">$0.00 (Free)</div>
+                </div>
+                <div style="background: var(--bg-color); padding: 8px 10px; border-radius: 8px; border: 1.5px solid var(--pink-primary);">
+                  <div style="color: var(--pink-primary); font-size: 0.68rem; font-weight: 800;">YOUR NET CUT</div>
+                  <div style="font-weight: 900; font-size: 1.15rem; color: var(--pink-primary); margin-top: 2px;" id="hub-breakdown-net">$0.00</div>
+                </div>
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; line-height: 1.4;" id="hub-breakdown-note">
+                Calculated live via Stripe Connect. Upon checkout, the 15% platform commission and weight-based shipping are deducted automatically, and your 85% net proceeds are deposited directly into your bank account.
+              </div>
+            </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">
+                Product Photo (Upload, Camera, or URL):
+              </label>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 8px;">
+                <input type="file" id="add-item-file" accept="image/*" class="customizer-input" style="flex: 1; min-width: 160px; padding: 6px;">
+                <input type="file" id="add-item-camera" accept="image/*" capture="environment" style="display: none;" onchange="AroSellerHub.handleCameraCapture(event)">
+                <button type="button" class="btn-secondary" onclick="document.getElementById('add-item-camera').click()" style="font-size: 0.8rem; padding: 8px 12px; display: inline-flex; align-items: center; gap: 6px;" title="Take photo with device camera">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  <span>Camera</span>
+                </button>
+                <input type="url" id="add-item-image" class="customizer-input" placeholder="Or paste image URL..." style="flex: 1; min-width: 160px;">
+              </div>
+              <div class="upload-preview-box" id="add-item-preview-container" style="background: var(--surface-color); border: 1px dashed var(--border-color); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; align-items: center; gap: 12px; min-height: 58px;">
+                <div id="add-item-preview-thumb" style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--bg-color); display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border-color); flex-shrink: 0;">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon" style="color: var(--text-muted);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <div style="flex: 1; font-size: 0.78rem;">
+                  <strong id="add-item-file-title" style="display: block; color: var(--text-main);">Photo Preview</strong>
+                  <span id="add-item-file-name" style="color: var(--text-muted); display: block; word-break: break-all;">No photo selected. Upload a file, capture with camera, or paste an image URL.</span>
+                </div>
+                <button type="button" id="add-item-file-clear" class="btn-secondary" style="display: none; font-size: 0.72rem; padding: 4px 10px;" onclick="AroSellerHub.clearListingImage()">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group" style="grid-column: span 2; display: flex; gap: 20px; align-items: center; padding: 10px 14px; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: var(--radius-sm);">
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer;">
+                <input type="checkbox" id="add-item-smokefree" checked style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span>Smoke-Free Environment</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer;">
+                <input type="checkbox" id="add-item-petfree" checked style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+                <span>Pet-Free Environment</span>
+              </label>
+            </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">Item Description:</label>
+              <textarea id="add-item-desc" class="customizer-input" rows="3" placeholder="Describe specifications, condition grading, details..." required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="customizer-footer" style="padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn-secondary" onclick="AroSellerHub.closeAddListingModal()">Cancel</button>
+          <button type="submit" class="btn-primary" id="quick-add-submit-btn" style="padding: 9px 20px; font-weight: 700;"><span id="quick-add-submit-label">Publish Listing to Store</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Real-Time Synced Support Chat Widget -->
+  <div class="support-chat-widget">
+    <button type="button" class="support-chat-trigger" id="support-chat-trigger" aria-label="Open Support Chat" title="Chat with Aro Concierge">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span class="chat-unread-dot"></span>
+    </button>
+    <div class="support-chat-window hidden" id="support-chat-window" role="dialog" aria-label="Support Chat">
+      <div class="chat-win-header">
+        <div class="chat-win-title">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <span>Aro Merchant Concierge</span>
+        </div>
+        <button type="button" id="support-chat-close" style="font-size: 1.3rem; color: var(--text-muted);">&times;</button>
+      </div>
+      <div class="chat-win-body" id="support-chat-body">
+        <!-- Messages rendered from AroChat -->
+      </div>
+      <div class="chat-win-footer">
+        <input type="text" id="support-chat-input" placeholder="Ask a seller question or request assistance...">
+        <button type="button" class="btn-primary" id="support-chat-send" style="padding: 8px 16px;">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Visual Box Customizer Modal (Strictly Scoped to Seller's Own Page) -->
+  <div class="customizer-modal hidden" id="seller-page-box-modal" role="dialog" aria-modal="true" aria-labelledby="page-box-modal-title">
+    <div class="customizer-backdrop" onclick="AroSellerHub.closePageUiModal()"></div>
+    <div class="customizer-card" style="max-width: 640px;">
+      <div class="customizer-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.5 0l-2.5-2.5c-1-1-1-2.5 0-3.5L15.3 2.7c1-1 2.5-1 3.5 0l2.5 2.5c1 1 1 2.5 0 3.5z"></path></svg>
+          <div>
+            <h3 id="page-box-modal-title" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin: 0;">Store Page Visual Box Editor</h3>
+            <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;">Scoped to Your Storefront Page Only &bull; Public Platform Protected</span>
+          </div>
+        </div>
+        <button type="button" class="customizer-close" onclick="AroSellerHub.closePageUiModal()">&times;</button>
+      </div>
+      <div class="customizer-body" style="padding: 20px; max-height: 70vh; overflow-y: auto;">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">Box Width Sizing:</label>
+          <select id="modal-box-width" class="customizer-input">
+            <option value="100%">100% Full Width (Default)</option>
+            <option value="90%">90% Comfortable Sizing</option>
+            <option value="80%">80% Compact Focus</option>
+            <option value="1100px">1100px Fixed Centered Box</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">Box Minimum Height:</label>
+          <select id="modal-box-height" class="customizer-input">
+            <option value="auto">Auto (Content-Driven)</option>
+            <option value="380px">380px Standard</option>
+            <option value="460px">460px Prominent</option>
+            <option value="540px">540px Hero Exhibition</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" id="modal-has-topbar" style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+            <span>Include Custom Top Announcement Bar on My Store Page</span>
+          </label>
+          <input type="text" id="modal-topbar-text" class="customizer-input" placeholder="e.g. Official Verified Artisan Forge • 72-Hour Buyer Protection" style="margin-top: 6px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); cursor: pointer;">
+            <input type="checkbox" id="modal-has-botbar" style="accent-color: var(--pink-primary); width: 16px; height: 16px;">
+            <span>Include Custom Bottom Assurance Bar on My Store Page</span>
+          </label>
+          <input type="text" id="modal-botbar-text" class="customizer-input" placeholder="e.g. Insured commercial packaging with 72-hr inspection return rights" style="margin-top: 6px;">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">Embed Media into Your Store Box:</label>
+          <select id="modal-media-type" class="customizer-input" style="margin-bottom: 6px;">
+            <option value="none">None</option>
+            <option value="photo">High-Res Photo</option>
+            <option value="video">Looping Video (.mp4)</option>
+          </select>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="file" id="modal-media-file" accept="image/*,video/mp4" class="customizer-input" style="flex: 1; min-width: 160px; padding: 6px;">
+            <input type="url" id="modal-media-url" class="customizer-input" placeholder="Media URL (https://...)" style="flex: 1; min-width: 160px;">
+          </div>
+        </div>
+      </div>
+      <div class="customizer-footer" style="padding: 14px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" class="btn-secondary" onclick="AroSellerHub.closePageUiModal()">Cancel</button>
+        <button type="button" class="btn-primary" onclick="AroSellerHub.applyModalBoxConfig()" style="padding: 9px 20px; font-weight: 700;">Apply to My Store Page Only</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Standard Site Footer -->
+  <footer class="site-footer" style="margin-top: auto;">
+    <div class="container footer-top">
+      <div class="footer-col">
+        <a href="index.html#store-hero-section" class="brand-logo" style="margin-bottom: 12px; display: inline-flex; text-decoration: none;">
+          <span class="aro-neon-text" style="font-size: 2rem;">Aro</span>
+        </a>
+        <p style="font-size: 0.85rem; line-height: 1.6; max-width: 300px; color: var(--text-muted);">
+          Commercial multi-market commerce facilitating independent sellers, artisans, and circular curators.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Store Types</h4>
+        <ul>
+          <li><a href="index.html?store=AroMarket" class="footer-link-btn">AroMarket (Standard Retail)</a></li>
+          <li><a href="index.html?store=Thrift" class="footer-link-btn">Thrift (Circular Archive)</a></li>
+          <li><a href="index.html?store=Auction" class="footer-link-btn">Auction (Timed Reserve)</a></li>
+          <li><a href="index.html?store=Art" class="footer-link-btn">Art (Artisan Studios)</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Seller Portals</h4>
+        <ul>
+          <li><a href="seller-hub.html" class="footer-link-btn" style="color: var(--pink-primary); font-weight: 700;">Seller Hub</a></li>
+          <li><a href="terms.html" class="footer-link-btn">Seller Legal Warranties</a></li>
+          <li><a href="faq.html" class="footer-link-btn">Help Center &amp; Community FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Trust &amp; Safety</h4>
+        <ul>
+          <li><a href="terms.html" class="footer-link-btn">72-Hour Buyer Protection Terms</a></li>
+          <li><a href="terms.html" class="footer-link-btn">Shipping &amp; Logistics Agreement</a></li>
+          <li><a href="terms.html" class="footer-link-btn">Platform Fee Schedule (15%)</a></li>
+          <li><a href="terms.html" class="footer-link-btn">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>&copy; 2026 Aro. All rights reserved.</div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <a href="seller-hub.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Seller Hub</a>
+        <span style="opacity: 0.4;">&bull;</span>
+        <a href="terms.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Terms of Service &amp; Privacy</a>
+        <span style="opacity: 0.4;">&bull;</span>
+        <a href="faq.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Help &amp; FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Native Mobile App Bottom Navigation Bar (Active on screens <= 768px, matching App View) -->
+  <nav class="mobile-app-bottom-bar app-sim-native-bottom-bar" id="mobile-app-bottom-bar" aria-label="Mobile Navigation">
+    <a href="index.html" class="app-sim-tab-item" id="mobile-tab-shop" style="text-decoration: none;">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Shop</span>
+    </a>
+    <button type="button" class="app-sim-tab-item active" id="mobile-tab-seller" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span>Seller</span>
+    </button>
+    <button type="button" class="app-sim-tab-item" id="mobile-tab-support" onclick="if (typeof AroChat !== 'undefined') AroChat.openWidget();">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span>Support</span>
+    </button>
+    <a href="index.html#orders" class="app-sim-tab-item" id="mobile-tab-orders" style="text-decoration: none;">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <span>Orders</span>
+    </a>
+    <button type="button" class="app-sim-tab-item" id="mobile-tab-profile" onclick="if (typeof AroAuth !== 'undefined' && AroAuth.getCurrentUser()) { alert('Signed in as @' + AroAuth.getCurrentUser().username); } else { window.location.href = 'index.html#auth'; }">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </button>
+    <div class="app-sim-home-indicator"></div>
+  </nav>
+
+  <!-- Core Scripts -->
+  <script src="js/security.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/phone-verify.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/store-data.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/shipping-label.js"></script>
+  <script src="js/seller-hub.js"></script>
+</body>
+</html>

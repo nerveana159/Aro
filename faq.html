@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: 'unsafe-inline';">
+  <title>Frequently Asked Questions (FAQ) &amp; Community Help | Aro</title>
+  <meta name="description" content="Find instant answers to common questions about AroMarket, Thrift, Auction, Fine Art, billing, shipping, and buyer guarantees, or ask the Aro community.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/store.css">
+  <style>
+    .faq-main-content {
+      min-height: calc(100vh - 350px);
+      padding-bottom: 60px;
+    }
+    @media (max-width: 768px) {
+      .site-header {
+        display: block !important;
+      }
+      .header-inner {
+        height: auto;
+        padding: 12px 0;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body class="theme-light">
+
+  <!-- ========================================================================
+       Header
+       ======================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- Brand Logo -->
+      <a href="index.html#store-hero-section" class="brand-logo" aria-label="Aro Webstore Home" title="Return to Top of Marketplace" style="flex-shrink: 0; text-decoration: none;">
+        <span class="aro-neon-text">Aro</span>
+        <span class="brand-dot"></span>
+        <span class="brand-tag">Help Center</span>
+      </a>
+
+      <!-- Quick Navigation -->
+      <nav class="header-nav" style="display: flex; gap: 16px; align-items: center;">
+        <a href="index.html" class="nav-item">Storefront</a>
+        <button type="button" class="nav-item" id="nav-official-faq" style="background: none; border: none; cursor: pointer; font-weight: 700; color: var(--pink-primary);">Official FAQ</button>
+        <button type="button" class="nav-item" id="nav-community-faq" style="background: none; border: none; cursor: pointer; font-weight: 600;">Community Q&amp;A</button>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <!-- Community Ask Button -->
+        <button type="button" class="btn-primary" id="header-ask-btn" style="padding: 8px 16px; font-size: 0.82rem; gap: 6px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Ask Community
+        </button>
+
+        <!-- User Profile / Sign In Dropdown -->
+        <div class="user-account-wrapper" id="user-account-wrapper" style="position: relative;">
+          <button type="button" class="user-account-badge" id="header-user-btn" aria-haspopup="true" aria-expanded="false" title="Member Account">
+            <span id="user-badge-icon">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </span>
+            <span id="user-badge-label">Sign In</span>
+            <span id="user-badge-chevron" class="user-badge-chevron" style="display: none;">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+          </button>
+
+          <!-- Dropdown menu when signed in -->
+          <div class="user-account-dropdown" id="user-account-dropdown" role="menu">
+            <div class="user-dropdown-header">
+              <img id="user-dropdown-avatar" src="" alt="Avatar" class="user-avatar-tiny" style="width: 36px; height: 36px;">
+              <div class="user-dropdown-meta">
+                <div class="user-dropdown-name" id="user-dropdown-name">User Name</div>
+                <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                  <div class="user-dropdown-handle" id="user-dropdown-handle">@username</div>
+                  <span id="user-dropdown-2fa-badge" class="badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981; font-size: 0.64rem; font-weight: 700; display: inline-flex; align-items: center; gap: 3px;">
+                    <svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>2FA Active</span>
+                  </span>
+                </div>
+                <div class="user-dropdown-credits" id="user-dropdown-credits" style="font-size: 0.78rem; color: var(--pink-primary); font-weight: 700; margin-top: 3px;">Aro Credits: $0.00</div>
+              </div>
+            </div>
+            
+            <div class="user-dropdown-items">
+              <a href="index.html" class="user-dropdown-item">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span>Shop Marketplace</span>
+              </a>
+              <div class="user-dropdown-divider"></div>
+              <button type="button" class="user-dropdown-item logout" id="user-dropdown-logout-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Log Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme Toggle -->
+        <button type="button" class="btn-icon" id="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light/Dark Theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       Main FAQ Content
+       ======================================================================== -->
+  <main class="container faq-main-content">
+    
+    <!-- Hero Section -->
+    <section class="faq-hero">
+      <h1>Got Questions? We've Got Answers!</h1>
+      <p>Everything you need to know about shopping, vintage gems, fast auctions, buyer protection, and creator love.</p>
+    </section>
+
+    <!-- Area Topic Selector (User selects area first) -->
+    <section class="faq-area-container">
+      <div class="faq-area-label">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        Select Area / Topic
+      </div>
+      <div class="faq-area-pills" id="faq-area-pills">
+        <button type="button" class="faq-area-pill active" data-area="All">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          All Topics
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Market">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          AroMarket (Retail &amp; Vintage)
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Thrift">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg>
+          Thrift (Donated Only)
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Auction">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="m14 13 5 5m-4-7 3-3a2.121 2.121 0 0 1 3 3l-3 3m-7-2 6 6M2 21h7M2 17l5-5"></path></svg>
+          Auction (Live Bids)
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Local">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Local Sales (Safe Meetup)
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Art">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path></svg>
+          Art &amp; Studio (Handmade)
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Billing">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          Billing &amp; Payments
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Shipping">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          Shipping &amp; Delivery
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Returns">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Returns &amp; Guarantee
+        </button>
+        <button type="button" class="faq-area-pill" data-area="Selling">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Selling &amp; Payouts
+        </button>
+      </div>
+    </section>
+
+    <!-- Controls Bar: Search & View Toggle -->
+    <div class="faq-controls-bar">
+      <!-- Search Input -->
+      <div class="faq-search-box">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="faq-search-input" class="faq-search-input" placeholder="Search questions, keywords, or topics...">
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="faq-mode-toggle">
+        <button type="button" class="faq-mode-btn active" id="btn-mode-official">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          Official FAQ
+        </button>
+        <button type="button" class="faq-mode-btn" id="btn-mode-community">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          Community FAQ
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Filter Status Indicator -->
+    <div id="faq-status-bar" style="margin-bottom: 18px; font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between;">
+      <span id="faq-count-label">Showing all official questions</span>
+      <button type="button" id="faq-reset-filters-btn" style="background: none; border: none; color: var(--pink-primary); cursor: pointer; font-size: 0.8rem; font-weight: 600; display: none;">Reset Filters</button>
+    </div>
+
+    <!-- View 1: Official FAQ (Accordion List) -->
+    <section id="view-official-faq">
+      <div class="faq-accordion-group" id="official-accordion-list">
+        <!-- Rendered dynamically by faq.js -->
+      </div>
+    </section>
+
+    <!-- View 2: Community FAQ (User Questions & Answers) -->
+    <section id="view-community-faq" class="hidden">
+      <div class="community-header-row">
+        <div>
+          <h2 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Community Questions &amp; Answers</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Real shoppers and sellers answering questions. Share your knowledge with fellow collectors.</p>
+        </div>
+        <button type="button" class="btn-primary" id="btn-open-ask-modal" style="padding: 10px 20px;">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Ask a Question
+        </button>
+      </div>
+
+      <div id="community-questions-list">
+        <!-- Rendered dynamically by faq.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       Ask Community Question Modal
+       ======================================================================== -->
+  <div class="terms-modal hidden" id="ask-question-modal">
+    <div class="customizer-backdrop" id="ask-modal-backdrop"></div>
+    <div class="terms-card" style="max-width: 540px;" role="dialog" aria-modal="true">
+      <div class="customizer-header">
+        <div class="customizer-title-wrap">
+          <span class="customizer-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </span>
+          <h3 style="font-size: 1.1rem; font-weight: 700;">Ask the Aro Community</h3>
+        </div>
+        <button type="button" class="customizer-close" id="ask-modal-close">&times;</button>
+      </div>
+
+      <form id="ask-question-form" style="padding: 24px;" onsubmit="return false;">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px;">Relevant Area / Store Format</label>
+          <select id="ask-topic-select" class="customizer-input" style="width: 100%;">
+            <option value="Market">AroMarket (Retail)</option>
+            <option value="Thrift">Thrift (Vintage)</option>
+            <option value="Auction">Auction (Live Bidding)</option>
+            <option value="Art">Fine Art</option>
+            <option value="Billing">Billing &amp; Payments</option>
+            <option value="Shipping">Shipping &amp; Delivery</option>
+            <option value="Returns">Returns &amp; Guarantee</option>
+            <option value="Selling">Selling &amp; Payouts</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px;">Your Question</label>
+          <textarea id="ask-question-text" class="customizer-input" style="width: 100%; min-height: 110px; resize: vertical; padding: 12px; font-family: inherit;" placeholder="e.g. How fast do sellers dispatch packages after order confirmation?" required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn-secondary" id="ask-cancel-btn">Cancel</button>
+          <button type="submit" class="btn-primary" id="ask-submit-btn">Post Question</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       User Authentication & Account Modal (Shared with Storefront)
+       ======================================================================== -->
+  <div class="customizer-modal hidden" id="auth-modal">
+    <div class="customizer-backdrop" id="auth-modal-backdrop"></div>
+    <div class="customizer-card" style="max-width: 440px;">
+      <div class="customizer-header">
+        <h3 id="auth-modal-title" style="font-size: 1.15rem; font-weight: 800; color: var(--text-main);">Aro Member Account</h3>
+        <button type="button" class="customizer-close" id="auth-modal-close">&times;</button>
+      </div>
+
+      <div id="auth-guest-view">
+        <div class="auth-tab-row" style="display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 16px;">
+          <button type="button" class="auth-tab-btn active" id="tab-signin-btn" style="flex: 1; padding: 10px; border: none; background: none; font-weight: 700; color: var(--pink-primary); border-bottom: 2px solid var(--pink-primary); cursor: pointer;">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="tab-signup-btn" style="flex: 1; padding: 10px; border: none; background: none; font-weight: 600; color: var(--text-muted); cursor: pointer;">Create Account</button>
+        </div>
+
+        <!-- Sign In Form -->
+        <form id="signin-form" class="customizer-body" style="padding-top: 0;" onsubmit="return false;">
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Username or Email</label>
+            <input type="text" id="signin-id" class="customizer-input" placeholder="e.g. your_username or you@example.com" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Password</label>
+            <input type="password" id="signin-password" class="customizer-input" placeholder="••••••••" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer; user-select: none;">
+              <input type="checkbox" id="signin-stay-signed-in" style="accent-color: var(--pink-primary); cursor: pointer;">
+              <span>Stay signed in on this device</span>
+            </label>
+          </div>
+          <button type="submit" class="btn-primary" id="btn-submit-signin" style="width: 100%; padding: 12px;">Sign In to Aro</button>
+        </form>
+
+        <!-- Sign Up Form -->
+        <form id="signup-form" class="customizer-body hidden" style="padding-top: 0;" onsubmit="return false;">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Full Name</label>
+            <input type="text" id="signup-name" class="customizer-input" placeholder="e.g. Kai Edwards" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Username</label>
+            <input type="text" id="signup-username" class="customizer-input" placeholder="e.g. vintage_hunter" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">Email</label>
+            <input type="email" id="signup-email" class="customizer-input" placeholder="e.g. kai@example.com" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+              <label style="display: block; font-size: 0.8rem; font-weight: 600;">Mobile Phone Number</label>
+              <span style="font-size: 0.72rem; color: #10b981; font-weight: 700;">Mobile SMS Verification</span>
+            </div>
+            <input type="tel" id="signup-phone" class="customizer-input" placeholder="e.g. (555) 234-5678" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+            <div id="signup-phone-error" style="display: none; margin-top: 6px; padding: 8px 10px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #ef4444; font-size: 0.76rem; line-height: 1.4;"></div>
+            <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">
+              Enter your mobile number to receive a one-time SMS verification code.
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;">
+              <span>Referral Code (Optional)</span>
+              <span style="font-size: 0.72rem; color: var(--pink-primary); font-weight: 700;">Get $10 In-House Credit</span>
+            </label>
+            <input type="text" id="signup-referral-code" class="customizer-input" placeholder="e.g. ARO-HEAVEN-20" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main); text-transform: uppercase; font-family: monospace; font-weight: 700;">
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+              Mandatory Terms &amp; Conditions (Scroll &amp; Review)
+            </label>
+            <div id="signup-terms-scrollbox" style="height: 105px; overflow-y: auto; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; font-size: 0.73rem; color: var(--text-muted); line-height: 1.45; margin-top: 4px; scrollbar-width: none; -ms-overflow-style: none;">
+              <strong style="color: var(--text-main);">Summary of Key Terms:</strong><br>
+              • <strong>Store Legalities &amp; Buyer Guarantee:</strong> Sellers operate as independent merchants and bear strict legal liability for product safety, accurate descriptions, and packaging across AroMarket, Thrift (mandatory smoke/pet disclosures), Auction (binding bids, pre-authorization &amp; 10-minute purchase forfeiture to second highest bidder), and Art stores. Aro does not check authenticity; Aro guarantees buyers get what they requested or their money back (and seller forfeits funds). Once delivered as requested without dispute, the buyer forfeits the funds to the seller. Sellers fully indemnify Aro.<br>
+              • <strong>Transparent Fee Schedule:</strong> Flat 15% platform fee on sales. Aro funds 100% of shipping for packages under 1 lb out of this fee. Standard commercial carrier rates apply over 1 lb. 0% fee on creator tips.<br>
+              • <strong>Credit Programs (FAQ, Donate &amp; Referrals):</strong> Thrift Circular Archive Donors receive a perpetual 5% storage dividend on resales; verified FAQ answers earn $5.00 in-house credit upon 3 community endorsements; referrals grant $20 referrer and $10 referee credits. All credits are non-cashable in-house store credit spendable at 1:1 USD.<br>
+              • <strong>72-Hour Buyer Protection:</strong> Buyer funds are safely held during a 72-hour inspection window post-delivery before seller disbursements.<br>
+              • <strong>Zero Tolerance Prohibitions:</strong> Mystery boxes, undisclosed lots, and counterfeit items are strictly forbidden.<br>
+              • Read complete policies at <a href="terms.html" target="_blank" style="color: var(--pink-primary); font-weight: 700;">terms.html</a>.
+            </div>
+            <div style="display: flex; align-items: flex-start; gap: 8px; margin-top: 8px;">
+              <input type="checkbox" id="signup-agree-terms" style="margin-top: 3px; accent-color: var(--pink-primary); cursor: pointer;" required>
+              <label for="signup-agree-terms" style="font-size: 0.78rem; color: var(--text-main); line-height: 1.4; cursor: pointer;">
+                I have viewed, scrolled, and agree to the <strong>Terms &amp; Conditions</strong>.
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="btn-submit-signup" style="width: 100%; padding: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+            <span>Verify Mobile &amp; Create Account</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </form>
+
+        <!-- Phone SMS Verification Step 2 -->
+        <div id="signup-verify-step" class="customizer-body hidden" style="padding-top: 0;">
+          <div style="text-align: center; margin-bottom: 16px;">
+            <div style="width: 52px; height: 52px; margin: 0 auto 10px; border-radius: 50%; background: rgba(255, 20, 147, 0.12); border: 1px solid var(--pink-primary); display: flex; align-items: center; justify-content: center; color: var(--pink-primary);">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+            </div>
+            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">Verify Mobile Number</h4>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+              We sent a 6-digit SMS verification code to<br><strong id="verify-phone-display" style="color: var(--text-main); font-size: 0.95rem;">+1 (555) 234-5678</strong>
+            </p>
+            <div id="verify-carrier-badge" style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 20px; font-size: 0.72rem; color: #10b981; font-weight: 700;">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span id="verify-carrier-name">Mobile Number Verified</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label style="text-align: center; display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">
+              Enter 6-Digit Code
+            </label>
+            <input type="text" id="verify-sms-code" maxlength="6" inputmode="numeric" class="customizer-input" placeholder="••••••" style="text-align: center; font-size: 1.5rem; letter-spacing: 8px; font-weight: 800; padding: 12px; font-family: monospace; width: 100%; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-main);">
+            <div id="verify-code-error" style="display: none; margin-top: 6px; padding: 8px 10px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; color: #ef4444; font-size: 0.76rem; text-align: center;"></div>
+          </div>
+
+          <button type="button" class="btn-primary" id="btn-confirm-sms-code" style="width: 100%; padding: 12px; font-weight: 700;">
+            Confirm Code &amp; Finish Setup
+          </button>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 0.8rem;">
+            <button type="button" id="btn-back-to-signup-form" style="background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 0.78rem;">
+              ← Edit Phone Number
+            </button>
+            <button type="button" id="btn-resend-sms-code" style="background: none; border: none; color: var(--pink-primary); cursor: pointer; font-weight: 700; font-size: 0.78rem;">
+              Resend SMS Code
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       Secret Credit Notification Toast (Anti-bot recognition)
+       ======================================================================== -->
+  <div id="faq-credit-toast-container"></div>
+
+  <!-- ========================================================================
+       Footer (Fixed 4-Column Grid matching Aro Storefront)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <!-- Column 1: Brand Info -->
+      <div class="footer-col">
+        <a href="index.html#store-hero-section" class="brand-logo" style="margin-bottom: 12px; display: inline-flex; text-decoration: none;" title="Return to Top of Marketplace">
+          <span class="aro-neon-text" style="font-size: 2rem;">Aro</span>
+        </a>
+        <p style="font-size: 0.85rem; line-height: 1.6; max-width: 300px; color: var(--text-muted);">
+          Multimarket empowering small sellers and businesses.
+        </p>
+      </div>
+
+      <!-- Column 2: Store Types -->
+      <div class="footer-col">
+        <h4>Store Types</h4>
+        <ul>
+          <li><a href="index.html?store=AroMarket" class="footer-link-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> AroMarket</a></li>
+          <li><a href="index.html?store=Thrift" class="footer-link-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path></svg> Thrift</a></li>
+          <li><a href="index.html?store=Auction" class="footer-link-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="m14 13 5 5m-4-7 3-3a2.121 2.121 0 0 1 3 3l-3 3m-7-2 6 6M2 21h7M2 17l5-5"></path></svg> Auction</a></li>
+          <li><a href="index.html?store=Art" class="footer-link-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path></svg> Art</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Customer Care -->
+      <div class="footer-col">
+        <h4>Customer Care</h4>
+        <ul>
+          <li><a href="index.html#upload" class="footer-link-btn">Sell on Aro</a></li>
+          <li><a href="terms.html#guarantee" class="footer-link-btn">30-Day Guarantee</a></li>
+          <li><a href="faq.html" class="footer-link-btn" style="color: var(--pink-primary); font-weight: 700;">Frequently Asked Questions (FAQ)</a></li>
+          <li><a href="index.html#chat" class="footer-link-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Live Chat Assistance</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Trust & Security -->
+      <div class="footer-col">
+        <h4>Trust &amp; Security</h4>
+        <ul>
+          <li><a href="terms.html" class="footer-link-btn">Terms of Service</a></li>
+          <li><a href="terms.html" class="footer-link-btn">Privacy Policy</a></li>
+          <li><a href="faq.html" class="footer-link-btn">Help Center &amp; Community FAQ</a></li>
+          <li><a href="terms.html" class="footer-link-btn" style="color: var(--text-muted);"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="aro-svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Verified Safe Checkout</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="container footer-bottom">
+      <div>&copy; 2026 Aro. All rights reserved.</div>
+      <div>
+        <a href="seller-hub.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">Seller Hub</a>
+        <span style="margin: 0 8px; opacity: 0.4;">•</span>
+        <a href="terms.html" style="color: var(--text-muted); text-decoration: none;">Terms of Service &amp; Privacy</a>
+        <span style="margin: 0 8px; opacity: 0.4;">•</span>
+        <a href="faq.html" style="color: var(--pink-primary); font-weight: 700; text-decoration: none;">FAQ &amp; Community Help</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/security.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/store-data.js"></script>
+  <script src="js/phone-verify.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/faq.js"></script>
+</body>
+</html>
